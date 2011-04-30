@@ -12,18 +12,21 @@ package com.uncarved.helpers.http
 import com.uncarved.helpers.CanLog
 import java.io.InputStream
 import java.util.zip.GZIPInputStream
+import java.util.Arrays
 
 import org.apache.http._
 import org.apache.http.client._
 import org.apache.http.client.methods._
 import org.apache.http.client.utils.URLEncodedUtils
 import org.apache.http.client.entity.UrlEncodedFormEntity
+import org.apache.http.client.params.{HttpClientParams, CookiePolicy}
 import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.http.message.BasicNameValuePair
 
 import org.apache.http.entity.{StringEntity,HttpEntityWrapper}
 import org.apache.http.protocol.{HTTP, HttpContext, ExecutionContext}
 import org.apache.http.params.{HttpProtocolParams, BasicHttpParams, HttpConnectionParams}
+//import org.apache.http.cookie.params.CookieSpecPNames
 import org.apache.http.util.EntityUtils
 
 import scala.io.Source
@@ -107,7 +110,7 @@ case class Request(val reqType: RequestType.t, val url: String, val params: Seq[
 
 		def getJavaParams = {
 			val paramPairs = params.map(p=>new BasicNameValuePair(p._1, p._2))
-			val jParams = java.util.Arrays.asList(paramPairs.toArray: _*)
+			val jParams = Arrays.asList(paramPairs.toArray: _*)
 
 			jParams
 		}
@@ -434,7 +437,16 @@ class BasicClient extends RichClient with CanLog {
 			HttpProtocolParams.setUserAgent(params, userAgent)
 			HttpConnectionParams.setConnectionTimeout(params, connectionTimeout)
 			HttpConnectionParams.setSoTimeout(params, soTimeout)
-		 
+			HttpClientParams.setCookiePolicy(params, CookiePolicy.BROWSER_COMPATIBILITY)
+//			params.setParameter(
+//				CookieSpecPNames.DATE_PATTERNS, 
+//				Arrays.asList(
+//					"EEE, dd MMM-yyyy-HH:mm:ss z", 
+//					"EEE, dd MMM yyyy HH:mm:ss z", 
+//					"EEE, dd-MMM-yyyy HH:mm:ss z",
+//					"EEE, dd-MMM-yyyy HH:mm:ss zzz"
+//				)
+//			); 
 			logger.debug("Done creating Http Params")
 			params
 		}

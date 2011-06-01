@@ -36,20 +36,16 @@ class BasicClientSpec extends Spec {
 			}
 			assert(head_ok)
 		}
-
 		it("should be able to GET uncarved with parameters") {
-			val params = List(("tag"->""), ("limit"->"5"))
-			val xml = helper.getXML(Request(RequestType.GET, "http://www.uncarved.com/index.py/rss1.1.xml", params))
-			val items = xml \\ "item"
-			assert(items.length>0)
+			val params = List(("tag"->"1"),("limit"->"5"))
+			val str = helper.getString(RequestType.GET, "http://www.uncarved.com/", params)
+			assert(str.length>0)
 		}
-
 		it("should be able to get xml") {
-			val xml = helper.getXML("http://www.uncarved.com/index.py/rss1.1.xml")
-			val items = xml \\ "item"
-			assert(items.length>0)
+			val xml = helper.getXML("http://www.uncarved.com/static/cc-by.rdf")
+			val permits = xml \\ "permits"
+			assert(permits.length > 0)
 		}
-
 		it("should be able to handle redirects") {
 			val testCodes = List(301, 302, 307)
 			for(code <- testCodes) { 

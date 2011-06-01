@@ -26,7 +26,6 @@ import org.apache.http.message.BasicNameValuePair
 import org.apache.http.entity.{StringEntity,HttpEntityWrapper}
 import org.apache.http.protocol.{HTTP, HttpContext, ExecutionContext}
 import org.apache.http.params.{HttpProtocolParams, BasicHttpParams, HttpConnectionParams}
-//import org.apache.http.cookie.params.CookieSpecPNames
 import org.apache.http.util.EntityUtils
 
 import scala.io.Source
@@ -438,15 +437,6 @@ class BasicClient extends RichClient with CanLog {
 			HttpConnectionParams.setConnectionTimeout(params, connectionTimeout)
 			HttpConnectionParams.setSoTimeout(params, soTimeout)
 			HttpClientParams.setCookiePolicy(params, CookiePolicy.BROWSER_COMPATIBILITY)
-//			params.setParameter(
-//				CookieSpecPNames.DATE_PATTERNS, 
-//				Arrays.asList(
-//					"EEE, dd MMM-yyyy-HH:mm:ss z", 
-//					"EEE, dd MMM yyyy HH:mm:ss z", 
-//					"EEE, dd-MMM-yyyy HH:mm:ss z",
-//					"EEE, dd-MMM-yyyy HH:mm:ss zzz"
-//				)
-//			); 
 			logger.debug("Done creating Http Params")
 			params
 		}
